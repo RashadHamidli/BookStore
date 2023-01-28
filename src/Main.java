@@ -1,5 +1,11 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Container<User> container = new Container<>(new User());
+        doSomething(container);
+    }
+
+    public static void doSomething(Container<User> container) {
+        User user = (User) container.doItAndReturn();
+        System.out.println("user=" + user);
     }
 }
