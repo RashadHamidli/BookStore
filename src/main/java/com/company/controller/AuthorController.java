@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/authors")
 public class AuthorController {
     private final AuthorService authorService;
 

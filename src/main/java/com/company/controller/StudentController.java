@@ -3,7 +3,6 @@ package com.company.controller;
 import com.company.dto.StudentDTO;
 import com.company.entity.Student;
 import com.company.service.StudentService;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
