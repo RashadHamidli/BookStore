@@ -2,6 +2,7 @@ package com.company.service;
 
 import com.company.dao.AuthorRepository;
 import com.company.entity.Author;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public List<Author> getAllAuthor() {
+    public List<Author> getAllAuthors() {
         return authorRepository.findAll();
     }
 
@@ -24,12 +25,16 @@ public class AuthorService {
         return authorRepository.findById(id).orElse(null);
     }
 
-    public Author creatOneAuthor(Author author) {
+    public Author saveOneAuthor(Author author) {
         return authorRepository.save(author);
     }
 
     public void deleteOneAuthorById(Long id) {
-        authorRepository.deleteById(id);
+        try {
+            authorRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            System.out.println("Author " + id + " doesn't exist");
+        }
     }
 
     public Author updateOneAuthorById(Long id, Author newAuthor) {
@@ -40,7 +45,8 @@ public class AuthorService {
             foundAuthor.setAge(newAuthor.getAge());
             foundAuthor.setPassword(newAuthor.getPassword());
             foundAuthor.setAuthoredBooks(newAuthor.getAuthoredBooks());
-            return authorRepository.save(foundAuthor);
+            authorRepository.save(foundAuthor);
+            return foundAuthor;
         } else
             return null;
     }

@@ -28,7 +28,7 @@ public class StudentService {
         return studentRepository.findById(id).orElse(null);
     }
 
-    public Student updateOneStudent(Long id, Student newStudent) {
+    public Student updateOneStudentById(Long id, Student newStudent) {
         Optional<Student> student = studentRepository.findById(id);
         if (student.isPresent()) {
             Student foundStudent = student.get();
@@ -41,7 +41,7 @@ public class StudentService {
             return null;
     }
 
-    public void deleteOneStudent(Long id) {
+    public void deleteOneStudentById(Long id) {
         try {
             studentRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
