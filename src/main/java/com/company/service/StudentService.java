@@ -29,16 +29,16 @@ public class StudentService {
     }
 
     public Student updateOneStudentById(Long id, Student newStudent) {
-        Optional<Student> student = studentRepository.findById(id);
-        if (student.isPresent()) {
-            Student foundStudent = student.get();
-            foundStudent.setName(newStudent.getName());
-            foundStudent.setAge(newStudent.getAge());
-            foundStudent.setPassword(newStudent.getPassword());
-            foundStudent.setEmail(newStudent.getEmail());
-            foundStudent.setBooksReading(foundStudent.getBooksReading());
-            studentRepository.save(foundStudent);
-            return foundStudent;
+        Optional<Student> foundedStudent = studentRepository.findById(id);
+        if (foundedStudent.isPresent()) {
+            Student student = foundedStudent.get();
+            student.setName(newStudent.getName());
+            student.setAge(newStudent.getAge());
+            student.setPassword(newStudent.getPassword());
+            student.setEmail(newStudent.getEmail());
+            student.setBooksReading(student.getBooksReading());
+            studentRepository.save(student);
+            return student;
         } else
             return null;
     }

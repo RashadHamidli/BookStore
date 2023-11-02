@@ -38,16 +38,16 @@ public class AuthorService {
     }
 
     public Author updateOneAuthorById(Long id, Author newAuthor) {
-        Optional<Author> author = authorRepository.findById(id);
-        if (author.isPresent()) {
-            Author foundAuthor = new Author();
-            foundAuthor.setName(newAuthor.getName());
-            foundAuthor.setAge(newAuthor.getAge());
-            foundAuthor.setEmail(newAuthor.getEmail());
-            foundAuthor.setPassword(newAuthor.getPassword());
-            foundAuthor.setAuthoredBooks(newAuthor.getAuthoredBooks());
-            authorRepository.save(foundAuthor);
-            return foundAuthor;
+        Optional<Author> foundAuthor = authorRepository.findById(id);
+        if (foundAuthor.isPresent()) {
+            Author author = foundAuthor.get();
+            author.setName(newAuthor.getName());
+            author.setAge(newAuthor.getAge());
+            author.setEmail(newAuthor.getEmail());
+            author.setPassword(newAuthor.getPassword());
+            author.setAuthoredBooks(newAuthor.getAuthoredBooks());
+            authorRepository.save(author);
+            return author;
         } else
             return null;
     }

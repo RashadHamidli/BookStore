@@ -37,7 +37,7 @@ public class AuthorRestController {
         author.setName(authorDTO.getName());
         author.setEmail(authorDTO.getEmail());
         author.setAge(authorDTO.getAge());
-        author.setPassword(author.getPassword());
+        author.setPassword(authorDTO.getPassword());
         authorService.saveOneAuthor(author);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -50,7 +50,7 @@ public class AuthorRestController {
             author.setName(authorDTO.getName());
             author.setEmail(authorDTO.getEmail());
             author.setAge(authorDTO.getAge());
-            author.setPassword(author.getPassword());
+            author.setPassword(authorDTO.getPassword());
             authorService.updateOneAuthorById(id, author);
             return ResponseEntity.ok("update successfully");
         } else

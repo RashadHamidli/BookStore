@@ -29,13 +29,13 @@ public class BookService {
     }
 
     public Book updateOneBookById(Long id, Book newBook) {
-        Optional<Book> book = bookRepository.findById(id);
-        if (book.isPresent()) {
-            Book foundBook = new Book();
-            foundBook.setName(newBook.getName());
-            foundBook.setAuthor(newBook.getAuthor());
-            bookRepository.save(foundBook);
-            return foundBook;
+        Optional<Book> foundedBook = bookRepository.findById(id);
+        if (foundedBook.isPresent()) {
+            Book book = foundedBook.get();
+            book.setName(newBook.getName());
+            book.setAuthor(newBook.getAuthor());
+            bookRepository.save(book);
+            return book;
         } else
             return null;
     }
