@@ -43,6 +43,7 @@ public class AuthorService {
             Author foundAuthor = new Author();
             foundAuthor.setName(newAuthor.getName());
             foundAuthor.setAge(newAuthor.getAge());
+            foundAuthor.setEmail(newAuthor.getEmail());
             foundAuthor.setPassword(newAuthor.getPassword());
             foundAuthor.setAuthoredBooks(newAuthor.getAuthoredBooks());
             authorRepository.save(foundAuthor);

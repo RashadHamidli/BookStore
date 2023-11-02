@@ -21,7 +21,9 @@ public class Student {
     @Column(name = "student_name")
     private String name;
     @Column(name = "student_age")
-    private String age;
+    private int age;
+    @Column(name = "student_email")
+    private String email;
     @Column(name = "student_password")
     private String password;
     @ManyToMany

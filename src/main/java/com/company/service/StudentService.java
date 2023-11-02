@@ -24,8 +24,8 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student getOneStudentById(Long id) {
-        return studentRepository.findById(id).orElse(null);
+    public Optional<Student> getOneStudentById(Long id) {
+        return studentRepository.findById(id);
     }
 
     public Student updateOneStudentById(Long id, Student newStudent) {
@@ -34,6 +34,8 @@ public class StudentService {
             Student foundStudent = student.get();
             foundStudent.setName(newStudent.getName());
             foundStudent.setAge(newStudent.getAge());
+            foundStudent.setPassword(newStudent.getPassword());
+            foundStudent.setEmail(newStudent.getEmail());
             foundStudent.setBooksReading(foundStudent.getBooksReading());
             studentRepository.save(foundStudent);
             return foundStudent;
