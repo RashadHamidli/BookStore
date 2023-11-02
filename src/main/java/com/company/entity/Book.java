@@ -4,9 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "book")
+@Table(name = "books")
 @RequiredArgsConstructor
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -14,7 +13,9 @@ import lombok.*;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "book_id")
     private Long id;
+    @Column(name = "book_name")
     private String name;
     @ManyToOne
     @JoinColumn(name = "author_id")
