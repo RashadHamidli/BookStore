@@ -3,7 +3,6 @@ package com.company.controller;
 import com.company.dto.AuthorDTO;
 import com.company.entity.Author;
 import com.company.service.AuthorService;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +12,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/authors")
-public class AuthorController {
+public class AuthorRestController {
     private final AuthorService authorService;
 
-    public AuthorController(AuthorService authorService) {
+    public AuthorRestController(AuthorService authorService) {
         this.authorService = authorService;
     }
 

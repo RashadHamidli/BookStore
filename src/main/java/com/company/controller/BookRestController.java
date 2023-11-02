@@ -12,10 +12,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
-public class BookController {
+public class BookRestController {
     private final BookService bookService;
 
-    public BookController(BookService bookService) {
+    public BookRestController(BookService bookService) {
         this.bookService = bookService;
     }
 
@@ -35,7 +35,7 @@ public class BookController {
     public ResponseEntity<Book> createBook(@RequestBody BookDTO bookDTO) {
         Book book = new Book();
         book.setName(bookDTO.getName());
-        bookService.saveBook(book);
+        bookService.saveOneBook(book);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -44,8 +44,7 @@ public class BookController {
         bookService.deleteOneBookById(id);
         ResponseEntity.ok("delete successfully");
     }
-
-    @PostMapping
+    @PostMapping("/{id}")
     public ResponseEntity<String> updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
         Optional<Book> optionalBook = bookService.getOneBookById(id);
         if (optionalBook.isPresent()) {
