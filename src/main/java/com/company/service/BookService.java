@@ -5,7 +5,6 @@ import com.company.entity.Book;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import javax.swing.plaf.SpinnerUI;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +20,8 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Book getOneBookById(Long id) {
-        return bookRepository.findById(id).orElse(null);
+    public Optional<Book> getOneBookById(Long id) {
+        return bookRepository.findById(id);
     }
 
     public Book saveBook(Book book) {
