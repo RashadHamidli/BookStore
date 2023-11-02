@@ -21,6 +21,8 @@ public class Author {
     private String name;
     @Column(name = "author_age")
     private String age;
+    @Column(name = "author_password")
+    private String password;
     @OneToMany(mappedBy = "author")
     private List<Book> authoredBooks;
 }

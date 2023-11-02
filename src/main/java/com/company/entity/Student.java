@@ -22,6 +22,8 @@ public class Student {
     private String name;
     @Column(name = "student_age")
     private String age;
+    @Column(name = "student_password")
+    private String password;
     @ManyToMany
     @JoinTable(name = "books",
             joinColumns = @JoinColumn(name = "student_id"),
