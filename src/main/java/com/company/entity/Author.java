@@ -6,22 +6,19 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "student")
+@Table(name = "author")
 @RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Student {
+public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String age;
-    @ManyToMany
-    @JoinTable(name = "student_books",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private List<Book> booksReading;
+    @OneToMany(mappedBy = "author")
+    private List<Book> authoredBooks;
 }
