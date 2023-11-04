@@ -20,7 +20,7 @@ public class Author {
     @Column(name = "author_name")
     private String name;
     @Column(name = "author_age")
-    private int age;
+    private Integer age;
     @Column(name = "author_email")
     private String email;
     @Column(name = "author_password")

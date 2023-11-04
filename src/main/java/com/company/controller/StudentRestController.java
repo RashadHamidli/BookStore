@@ -35,4 +35,10 @@ public class StudentRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(student);
     }
 
+    @PostMapping("/{id}")
+    public ResponseEntity<StudentDTO> updateOneStudent(@PathVariable Long id, @RequestBody StudentDTO newStudentDTO) {
+        StudentDTO studentDTO = studentService.updateOneStudent(id, newStudentDTO);
+        return ResponseEntity.ok(studentDTO);
+    }
+
 }

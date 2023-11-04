@@ -15,6 +15,6 @@ public class StudentDTO {
     private String name;
     private String email;
     private String password;
-    private int age;
+    private Integer age;
     private List<BookDTO> booksReading;
 }
