@@ -11,10 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class StudentDTO {
+    private Long id;
     private String name;
-    private String surname;
-    private int age;
-    private String email;
-    public String password;
-    public List<Book> books;
+    private List<BookDTO> booksReading;
 }

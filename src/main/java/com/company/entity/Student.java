@@ -1,9 +1,11 @@
 package com.company.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Columns;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,9 +28,10 @@ public class Student {
     private String email;
     @Column(name = "student_password")
     private String password;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "books",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
+    @JsonIgnore
     private List<Book> booksReading;
 }
