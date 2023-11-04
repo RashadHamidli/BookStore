@@ -13,5 +13,8 @@ import java.util.List;
 public class StudentDTO {
     private Long id;
     private String name;
+    private String email;
+    private String password;
+    private int age;
     private List<BookDTO> booksReading;
 }

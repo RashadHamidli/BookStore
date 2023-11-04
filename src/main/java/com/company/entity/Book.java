@@ -6,7 +6,6 @@ import lombok.*;
 @Entity
 @Table(name = "books")
 @RequiredArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString

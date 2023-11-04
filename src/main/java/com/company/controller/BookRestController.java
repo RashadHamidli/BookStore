@@ -26,10 +26,9 @@ public class BookRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookDTO>> getAllBooks() {
+    public ResponseEntity<List<Book>> getAllBooks() {
         List<Book> books = bookService.getAllBooks();
         List<BookDTO> bookDTOs = new ArrayList<>();
-
         for (Book book : books) {
             BookDTO bookDTO = new BookDTO();
             bookDTO.setId(book.getId());
@@ -37,8 +36,7 @@ public class BookRestController {
             bookDTO.setAuthorId(book.getAuthor().getId());
             bookDTOs.add(bookDTO);
         }
-
-        return ResponseEntity.ok(bookDTOs);
+        return ResponseEntity.ok(books);
     }
 
     @GetMapping("/{id}")

@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "authors")
 @RequiredArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
