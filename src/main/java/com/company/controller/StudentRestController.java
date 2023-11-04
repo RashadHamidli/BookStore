@@ -1,7 +1,9 @@
 package com.company.controller;
 
 import com.company.dto.StudentDTO;
+import com.company.entity.Book;
 import com.company.entity.Student;
+import com.company.service.BookService;
 import com.company.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,11 @@ import java.util.Optional;
 @RequestMapping("/students")
 public class StudentRestController {
     private final StudentService studentService;
+    private final BookService bookService;
 
-    public StudentRestController(StudentService studentService) {
+    public StudentRestController(StudentService studentService, BookService bookService) {
         this.studentService = studentService;
+        this.bookService = bookService;
     }
 
     @GetMapping
@@ -38,7 +42,7 @@ public class StudentRestController {
         student.setAge(studentDTO.getAge());
         student.setEmail(studentDTO.getEmail());
         student.setPassword(studentDTO.getPassword());
-        student.setBooksReading(studentDTO.getBooks());
+//        student.setBooksReading(studentDTO.getBooks());
         studentService.saveOneStudent(student);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -62,5 +66,18 @@ public class StudentRestController {
     public void deleteOneStudent(@PathVariable Long id) {
         studentService.deleteOneStudentById(id);
         ResponseEntity.ok("delete successfully");
+    }
+
+    @PostMapping("/read/{id}")
+    public ResponseEntity<Book> readBook(@PathVariable Long id, @RequestBody Student newStudent) {
+        Long sId = newStudent.getId();
+        Long stId = studentService.getOneStudentById(sId).get().getId();
+        Optional<Book> optionalBook = bookService.getOneBookById(id);
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+            bookService.updateOneBookById(stId, book);
+            return ResponseEntity.ok(book);
+        }
+        return null;
     }
 }

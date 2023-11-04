@@ -39,7 +39,8 @@ public class AuthorRestController {
         author.setAge(authorDTO.getAge());
         author.setPassword(authorDTO.getPassword());
         authorService.saveOneAuthor(author);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+
+        return ResponseEntity.ok(author);
     }
 
     @PostMapping("/{id}")
@@ -56,10 +57,11 @@ public class AuthorRestController {
         } else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("author not found");
     }
+
     @DeleteMapping("/{id}")
-    public void deleteAuthor(@PathVariable Long id){
-            authorService.deleteOneAuthorById(id);
-            ResponseEntity.ok("delete successfully");
+    public void deleteAuthor(@PathVariable Long id) {
+        authorService.deleteOneAuthorById(id);
+        ResponseEntity.ok("delete successfully");
     }
 
 }

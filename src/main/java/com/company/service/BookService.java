@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -27,6 +28,7 @@ public class BookService {
     public Book saveOneBook(Book book) {
         return bookRepository.save(book);
     }
+
 
     public Book updateOneBookById(Long id, Book newBook) {
         Optional<Book> foundedBook = bookRepository.findById(id);

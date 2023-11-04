@@ -1,9 +1,7 @@
 package com.company.controller;
 
-import com.company.dto.BookDTO;
 import com.company.entity.Author;
 import com.company.entity.Book;
-import com.company.entity.Student;
 import com.company.service.AuthorService;
 import com.company.service.BookService;
 import com.company.service.StudentService;
@@ -12,8 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
@@ -36,18 +33,22 @@ public class BookRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Book> getOneBook(@PathVariable Long id) {
-        Book book = bookService.getOneBookById(id).orElse(null);
+        Book book = bookService.getOneBookById(id).get();
         return ResponseEntity.ok(book);
     }
-
-    @PostMapping("/{authorid}")
-    public ResponseEntity<Book> createBook(@PathVariable Long authorid, @RequestBody BookDTO bookDTO) {
-        Author author = authorService.getOneAuthorById(authorid).get();
+    @PostMapping()
+    public ResponseEntity<Book> createBook(@RequestBody Book newBook) {
+        Long id = newBook.getAuthor().getId();
+        Optional<Author> author = authorService.getOneAuthorById(id);
         Book book = new Book();
-        book.setAuthor(author);
-        book.setName(bookDTO.getName());
-        bookService.saveOneBook(book);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        book.setName(newBook.getName());
+        if (author.isPresent()) {
+            Author foundAuthor = author.get();
+            book.setAuthor(foundAuthor);
+            bookService.saveOneBook(book);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
@@ -55,15 +56,15 @@ public class BookRestController {
         bookService.deleteOneBookById(id);
         ResponseEntity.ok("delete successfully");
     }
-//    @PostMapping("/{id}")
-//    public ResponseEntity<String> updateBook(@PathVariable Long id, @RequestBody BookDTO bookDTO) {
-//        Optional<Book> optionalBook = bookService.getOneBookById(id);
-//        if (optionalBook.isPresent()) {
-//            Book book = new Book();
-//            book.setName(bookDTO.getName());
-//            bookService.updateOneBookById(id, book);
-//            return ResponseEntity.ok("update successfullu");
-//        } else
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("book not found");
-//    }
+    @PostMapping("/{id}")
+    public ResponseEntity<String> updateBook(@PathVariable Long id, @RequestBody Book newBook) {
+        Optional<Book> optionalBook = bookService.getOneBookById(id);
+        if (optionalBook.isPresent()) {
+            Book book = new Book();
+            book.setName(newBook.getName());
+            bookService.updateOneBookById(id, book);
+            return ResponseEntity.ok("update successfullu");
+        } else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("book not found");
+    }
 }
