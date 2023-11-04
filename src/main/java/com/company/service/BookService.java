@@ -43,11 +43,7 @@ public class BookService {
     }
 
     public void deleteOneBookById(Long id) {
-        try {
-            bookRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            System.out.println("Book " + id + " doesn't exist");
-        }
+        bookRepository.deleteById(id);
     }
 
     public Book getOneBookByName(String name) {

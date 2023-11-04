@@ -39,9 +39,9 @@ public class StudentRestController {
     public ResponseEntity<Student> createOneStudent(@RequestBody StudentDTO studentDTO) {
         Student student = new Student();
         student.setName(studentDTO.getName());
-        student.setAge(studentDTO.getAge());
-        student.setEmail(studentDTO.getEmail());
-        student.setPassword(studentDTO.getPassword());
+//        student.setAge(studentDTO.getAge());
+//        student.setEmail(studentDTO.getEmail());
+//        student.setPassword(studentDTO.getPassword());
 //        student.setBooksReading(studentDTO.getBooks());
         studentService.saveOneStudent(student);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -53,9 +53,9 @@ public class StudentRestController {
         if (optionalStudent.isPresent()) {
             Student student = new Student();
             student.setName(studentDTO.getName());
-            student.setAge(studentDTO.getAge());
-            student.setEmail(studentDTO.getEmail());
-            student.setPassword(studentDTO.getPassword());
+//            student.setAge(studentDTO.getAge());
+//            student.setEmail(studentDTO.getEmail());
+//            student.setPassword(studentDTO.getPassword());
             studentService.updateOneStudentById(id, student);
             return ResponseEntity.ok("update successfully");
         } else
