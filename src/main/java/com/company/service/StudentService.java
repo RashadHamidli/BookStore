@@ -3,7 +3,12 @@ package com.company.service;
 import com.company.dao.StudentRepository;
 import com.company.dto.StudentDTO;
 import com.company.entity.Student;
+import org.apache.catalina.UserDatabase;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -16,6 +21,7 @@ public class StudentService {
     public StudentDTO creatOneStudent(StudentDTO newStudentDTO) {
 
         Student student = new Student();
+        student.setId(newStudentDTO.getId());
         student.setName(newStudentDTO.getName());
         student.setEmail(newStudentDTO.getEmail());
         student.setAge(newStudentDTO.getAge());
@@ -24,11 +30,41 @@ public class StudentService {
         Student saveStudent = studentRepository.save(student);
 
         StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setId(saveStudent.getId());
         studentDTO.setName(saveStudent.getName());
         studentDTO.setEmail(saveStudent.getEmail());
         studentDTO.setAge(saveStudent.getAge());
         studentDTO.setPassword(saveStudent.getPassword());
         return studentDTO;
+    }
+
+    public List<StudentDTO> getAllStudent() {
+        List<StudentDTO> list = new ArrayList<>();
+        for (Student student : studentRepository.findAll()) {
+            StudentDTO studentDTO = new StudentDTO();
+            studentDTO.setId(student.getId());
+            studentDTO.setName(student.getName());
+            studentDTO.setEmail(student.getEmail());
+            studentDTO.setAge(student.getAge());
+            studentDTO.setPassword(student.getPassword());
+            list.add(studentDTO);
+        }
+        return list;
+    }
+
+    public StudentDTO getOneStudent(Long id) {
+        Optional<Student> studentOptional = studentRepository.findById(id);
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
+            StudentDTO studentDTO = new StudentDTO();
+            studentDTO.setId(student.getId());
+            studentDTO.setName(student.getName());
+            studentDTO.setEmail(student.getEmail());
+            studentDTO.setAge(student.getAge());
+            studentDTO.setPassword(student.getPassword());
+            return studentDTO;
+        }
+        return null;
     }
 
 //    public UserDTO createUser(UserDTO userDTO) {
