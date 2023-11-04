@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,9 +28,16 @@ public class BookRestController {
     @GetMapping
     public ResponseEntity<List<BookDTO>> getAllBooks() {
         List<Book> books = bookService.getAllBooks();
-        List<BookDTO> bookDTOs = books.stream()
-                .map(this::convertToBookDTO)
-                .collect(Collectors.toList());
+        List<BookDTO> bookDTOs = new ArrayList<>();
+
+        for (Book book : books) {
+            BookDTO bookDTO = new BookDTO();
+            bookDTO.setId(book.getId());
+            bookDTO.setName(book.getName());
+            bookDTO.setAuthorId(book.getAuthor().getId());
+            bookDTOs.add(bookDTO);
+        }
+
         return ResponseEntity.ok(bookDTOs);
     }
 
@@ -38,7 +46,12 @@ public class BookRestController {
         Optional<Book> optionalBook = bookService.getOneBookById(id);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
-            BookDTO bookDTO = convertToBookDTO(book);
+
+            BookDTO bookDTO = new BookDTO();
+            bookDTO.setId(book.getId());
+            bookDTO.setName(book.getName());
+            bookDTO.setAuthorId(book.getAuthor().getId());
+
             return ResponseEntity.ok(bookDTO);
         } else {
             return ResponseEntity.notFound().build();
@@ -57,11 +70,11 @@ public class BookRestController {
         }
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<String> deleteOneBook(@PathVariable Long id) {
-//        boolean isDeleted = bookService.deleteOneBookById(id);
-//        return isDeleted ? ResponseEntity.ok("Deleted successfully") : ResponseEntity.notFound().build();
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteOneBook(@PathVariable Long id) {
+        bookService.deleteOneBookById(id);
+        return ResponseEntity.ok("Deleted successfully");
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateBook(@PathVariable Long id, @RequestBody BookDTO updatedBookDTO) {
@@ -94,7 +107,6 @@ public class BookRestController {
         Book book = new Book();
         book.setId(bookDTO.getId());
         book.setName(bookDTO.getName());
-        // Set other properties if needed
         return book;
     }
 }
