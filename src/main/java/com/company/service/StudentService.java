@@ -37,8 +37,7 @@ public class StudentService {
             if (newStudent.getName() != null && !newStudent.getName().isEmpty()) {
                 student.setName(newStudent.getName());
             }
-
-            if (newStudent.getAge() != null && !newStudent.getAge().describeConstable().isEmpty()) {
+            if (newStudent.getAge() != null) {
                 student.setAge(newStudent.getAge());
             }
 

@@ -38,6 +38,7 @@ public class StudentRestController {
         student.setAge(studentDTO.getAge());
         student.setEmail(studentDTO.getEmail());
         student.setPassword(studentDTO.getPassword());
+        student.setBooksReading(studentDTO.getBooks());
         studentService.saveOneStudent(student);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

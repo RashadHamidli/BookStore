@@ -61,4 +61,5 @@ public class AuthorRestController {
             authorService.deleteOneAuthorById(id);
             ResponseEntity.ok("delete successfully");
     }
+
 }
