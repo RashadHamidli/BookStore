@@ -5,7 +5,9 @@ import com.company.entity.Student;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -32,11 +34,25 @@ public class StudentService {
         Optional<Student> foundedStudent = studentRepository.findById(id);
         if (foundedStudent.isPresent()) {
             Student student = foundedStudent.get();
-            student.setName(newStudent.getName());
-            student.setAge(newStudent.getAge());
-            student.setPassword(newStudent.getPassword());
-            student.setEmail(newStudent.getEmail());
-            student.setBooksReading(student.getBooksReading());
+            if (newStudent.getName() != null && !newStudent.getName().isEmpty()) {
+                student.setName(newStudent.getName());
+            }
+
+            if (newStudent.getAge() != null && !newStudent.getAge().describeConstable().isEmpty()) {
+                student.setAge(newStudent.getAge());
+            }
+
+            if (newStudent.getPassword() != null && !newStudent.getPassword().isEmpty()) {
+                student.setPassword(newStudent.getPassword());
+            }
+
+            if (newStudent.getEmail() != null && !newStudent.getEmail().isEmpty()) {
+                student.setEmail(newStudent.getEmail());
+            }
+
+            if (newStudent.getBooksReading() != null && !newStudent.getBooksReading().isEmpty()) {
+                student.setBooksReading(newStudent.getBooksReading());
+            }
             studentRepository.save(student);
             return student;
         } else

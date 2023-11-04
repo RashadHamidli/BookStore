@@ -21,7 +21,7 @@ public class Student {
     @Column(name = "student_name")
     private String name;
     @Column(name = "student_age")
-    private int age;
+    private Integer age;
     @Column(name = "student_email")
     private String email;
     @Column(name = "student_password")
