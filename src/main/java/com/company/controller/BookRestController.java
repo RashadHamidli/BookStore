@@ -1,8 +1,6 @@
 package com.company.controller;
 
-import com.company.dto.AuthorDTO;
 import com.company.dto.BookDTO;
-import com.company.service.AuthorService;
 import com.company.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
