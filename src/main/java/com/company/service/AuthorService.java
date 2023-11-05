@@ -118,6 +118,9 @@ public class AuthorService {
         Book book = new Book();
         book.setId(bookDTO.getId());
         book.setName(bookDTO.getName());
+        Author author = new Author();
+        author.setId(bookDTO.getAuthorId());
+        book.setAuthor(author);
         return book;
     }
 

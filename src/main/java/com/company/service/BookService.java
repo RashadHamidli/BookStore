@@ -2,6 +2,7 @@ package com.company.service;
 
 import com.company.dao.BookRepository;
 import com.company.dto.BookDTO;
+import com.company.entity.Author;
 import com.company.entity.Book;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,10 @@ public class BookService {
     private Book convertToEntity(BookDTO bookDTO) {
         Book book = new Book();
         book.setId(bookDTO.getId());
-        book.setName(book.getName());
+        book.setName(bookDTO.getName());
+        Author author = new Author();
+        author.setId(bookDTO.getAuthorId());
+        book.setAuthor(author);
         return book;
     }
 }
