@@ -39,18 +39,6 @@ public class StudentService {
     }
 
     public StudentDTO getOneStudent(Long id) {
-        Optional<Student> foundedStudent = studentRepository.findById(id);
-        if (foundedStudent.isPresent()) {
-            Student student = foundedStudent.get();
-            StudentDTO studentDTO = convertToDto(student);
-            List<BookDTO> bookDTOList = convertToBookDTOList(student.getBooksReading());
-            studentDTO.setBooksReading(bookDTOList);
-            return studentDTO;
-        }
-        return new StudentDTO();
-    }
-
-    public StudentDTO getOneStudentRelese(Long id) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()) {
             Student foundedStudent = optionalStudent.get();
@@ -77,7 +65,7 @@ public class StudentService {
                 foundedStudent.setPassword(newStudentDTO.getPassword());
             if (newStudentDTO.getBooksReading() != null && !newStudentDTO.getBooksReading().isEmpty()) {
                 List<BookDTO> bookDTOList = newStudentDTO.getBooksReading();
-                List<Book> books = convertToBookEntityList(bookDTOList);
+                List<Book> books = bookDTOList.stream().map(this::convertToBookEntity).toList();
                 foundedStudent.setBooksReading(books);
             }
             foundedStudent.setId(id);
@@ -114,18 +102,6 @@ public class StudentService {
         student.setAge(studentDTO.getAge());
         student.setPassword(student.getPassword());
         return student;
-    }
-
-    private List<BookDTO> convertToBookDTOList(List<Book> books) {
-        return books.stream()
-                .map(this::convertToBookDTO)
-                .collect(Collectors.toList());
-    }
-
-    private List<Book> convertToBookEntityList(List<BookDTO> books) {
-        return books.stream()
-                .map(this::convertToBookEntity)
-                .collect(Collectors.toList());
     }
 
     private BookDTO convertToBookDTO(Book book) {
