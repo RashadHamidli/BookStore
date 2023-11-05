@@ -41,4 +41,11 @@ public class StudentRestController {
         return ResponseEntity.ok(studentDTO);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteOneStudent(@PathVariable Long id) {
+        return studentService.deleteOneStudent(id) ? ResponseEntity.ok("Student with ID " + id + " has been deleted")
+                : ResponseEntity.notFound().build();
+
+    }
+
 }

@@ -17,6 +17,8 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+0
+
     public StudentDTO creatOneStudent(StudentDTO newStudentDTO) {
         Student student = convertToEntity(newStudentDTO);
         Student saveStudent = studentRepository.save(student);
@@ -57,7 +59,8 @@ public class StudentService {
         }
         return new StudentDTO();
     }
-//    public StudentDTO updateOneStudent(Long id, StudentDTO newStundetDTO) {
+
+    //    public StudentDTO updateOneStudent(Long id, StudentDTO newStundetDTO) {
 //        Optional<Student> optionalStudent = studentRepository.findById(id);
 //        if (optionalStudent.isPresent()) {
 //            Student foundedStudent = optionalStudent.get();
@@ -73,6 +76,14 @@ public class StudentService {
 //        }
 //        return new StudentDTO();
 //    }
+    public boolean deleteOneStudent(Long id) {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent()) {
+            studentRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 
     private StudentDTO convertToDto(Student student) {
         StudentDTO studentDTO = new StudentDTO();
