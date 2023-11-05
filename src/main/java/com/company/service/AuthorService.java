@@ -10,6 +10,7 @@ import com.company.entity.Student;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,16 +34,29 @@ public class AuthorService {
         }).collect(Collectors.toList());
     }
 
+    public AuthorDTO getOneAuthor(Long id) {
+        Optional<Author> optionalAuthor = authorRepository.findById(id);
+        if (optionalAuthor.isPresent()) {
+            Author foundedAuthor = optionalAuthor.get();
+            AuthorDTO authorDTO = convertToDTO(foundedAuthor);
+            List<Book> authoredBooks = foundedAuthor.getAuthoredBooks();
+            List<BookDTO> bookDTOList = authoredBooks.stream().map(this::converteToBookDTO).toList();
+            authorDTO.setAuthoredBooks(bookDTOList);
+            return authorDTO;
+        }
+        return new AuthorDTO();
+    }
+
+    private List<BookDTO> convertToAuthorDTOList(List<Book> authors) {
+        return authors.stream().map(this::converteToBookDTO).collect(Collectors.toList());
+    }
 
     public AuthorDTO creatOneAuthor(AuthorDTO newAuthorDTO) {
-        Author author = converteToAuthorEntity(newAuthorDTO);
+        Author author = converteToEntity(newAuthorDTO);
         Author saveAuthor = authorRepository.save(author);
         return convertToDTO(saveAuthor);
     }
 
-    private List<AuthorDTO> convertToAuthorDTOList(List<Author> authors) {
-        return authors.stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
 
     private AuthorDTO convertToDTO(Author author) {
         AuthorDTO authorDTO = new AuthorDTO();
@@ -54,7 +68,7 @@ public class AuthorService {
         return authorDTO;
     }
 
-    private Author converteToAuthorEntity(AuthorDTO authorDTO) {
+    private Author converteToEntity(AuthorDTO authorDTO) {
         Author author = new Author();
         author.setId(authorDTO.getId());
         author.setName(authorDTO.getName());

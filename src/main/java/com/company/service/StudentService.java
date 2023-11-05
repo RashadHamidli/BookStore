@@ -50,6 +50,19 @@ public class StudentService {
         return new StudentDTO();
     }
 
+    public StudentDTO getOneStudentRelese(Long id) {
+        Optional<Student> optionalStudent = studentRepository.findById(id);
+        if (optionalStudent.isPresent()) {
+            Student foundedStudent = optionalStudent.get();
+            StudentDTO studentDTO = convertToDto(foundedStudent);
+            List<Book> booksReading = foundedStudent.getBooksReading();
+            List<BookDTO> bookDTOS = booksReading.stream().map(this::convertToBookDTO).collect(Collectors.toList());
+            studentDTO.setBooksReading(bookDTOS);
+            return studentDTO;
+        }
+        return new StudentDTO();
+    }
+
     public StudentDTO updateOneStudent(Long id, StudentDTO newStudentDTO) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()) {
