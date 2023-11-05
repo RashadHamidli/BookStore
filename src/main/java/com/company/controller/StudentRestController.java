@@ -19,8 +19,8 @@ public class StudentRestController {
 
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudent() {
-        List<StudentDTO> students = studentService.getAllStudent();
-        return ResponseEntity.ok(students);
+        List<StudentDTO> studentDTOs = studentService.getAllStudent();
+        return ResponseEntity.ok(studentDTOs);
     }
 
     @GetMapping("/{id}")
@@ -30,9 +30,9 @@ public class StudentRestController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentDTO> creatOneStudent(@RequestBody StudentDTO studentDTO) {
-        StudentDTO student = studentService.creatStudent(studentDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(student);
+    public ResponseEntity<StudentDTO> creatOneStudent(@RequestBody StudentDTO newStudentDTO) {
+        StudentDTO studentDTO = studentService.creatStudent(newStudentDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(studentDTO);
     }
 
     @PostMapping("/{id}")

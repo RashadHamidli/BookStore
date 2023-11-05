@@ -3,10 +3,8 @@ package com.company.service;
 import com.company.dao.AuthorRepository;
 import com.company.dto.AuthorDTO;
 import com.company.dto.BookDTO;
-import com.company.dto.StudentDTO;
 import com.company.entity.Author;
 import com.company.entity.Book;
-import com.company.entity.Student;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +19,7 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    private List<AuthorDTO> getAllAuthor() {
+    public List<AuthorDTO> getAllAuthor() {
         List<Author> authors = authorRepository.findAll();
         return authors.stream().map(author -> {
             AuthorDTO authorDTO = convertToDTO(author);
