@@ -44,7 +44,7 @@ public class StudentService {
         if (foundedStudent.isPresent()) {
             Student student = foundedStudent.get();
             StudentDTO studentDTO= convertToDto(student);
-            List<BookDTO> bookDTOList= convertToBookEntity(student.getBooksReading());
+            List<BookDTO> bookDTOList= convertToBookDTOList(student.getBooksReading());
             studentDTO.setBooksReading(bookDTOList);
             return studentDTO;
         }
@@ -64,7 +64,11 @@ public class StudentService {
             if (newStudentDTO.getPassword() != null) ;
             foundedStudent.setPassword(newStudentDTO.getPassword());
 
-//            foundedStudent.setBooksReading(convertToBookList(newStudentDTO.getBooksReading()));
+            if (newStudentDTO.getBooksReading() != null) {
+                List<BookDTO> bookDTOList = newStudentDTO.getBooksReading();
+                List<Book> books = convertToBookEntityList(bookDTOList);
+                foundedStudent.setBooksReading(books);
+            }
 
             foundedStudent.setId(id);
             Student updateStudent = studentRepository.save(foundedStudent);
@@ -118,9 +122,14 @@ public class StudentService {
         return student;
     }
 
-    private List<BookDTO> convertToBookEntity(List<Book> books) {
+    private List<BookDTO> convertToBookDTOList(List<Book> books) {
         return books.stream()
                 .map(this::convertToBookDTO)
+                .collect(Collectors.toList());
+    }
+    private List<Book> convertToBookEntityList(List<BookDTO> books) {
+        return books.stream()
+                .map(this::convertToBookEntity)
                 .collect(Collectors.toList());
     }
 
@@ -130,6 +139,13 @@ public class StudentService {
         bookDTO.setName(book.getName());
         bookDTO.setAuthorId(book.getAuthor().getId());
         return bookDTO;
+    }
+    private Book convertToBookEntity(BookDTO bookDTO) {
+        Book book = new Book();
+        book.setId(bookDTO.getId());
+        book.setName(bookDTO.getName());
+        bookDTO.setAuthorId(bookDTO.getId());
+        return book;
     }
 
 }
