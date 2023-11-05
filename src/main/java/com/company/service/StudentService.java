@@ -77,22 +77,6 @@ public class StudentService {
         return new StudentDTO();
     }
 
-    //    public StudentDTO updateOneStudent(Long id, StudentDTO newStundetDTO) {
-//        Optional<Student> optionalStudent = studentRepository.findById(id);
-//        if (optionalStudent.isPresent()) {
-//            Student foundedStudent = optionalStudent.get();
-//            Student student = convertToEntity(newStundetDTO);
-//            try {
-//                BeanUtils.copyProperties(foundedStudent, student);
-//                foundedStudent.setId(id);
-//                Student updateStudent = studentRepository.save(foundedStudent);
-//                return convertToDto(updateStudent);
-//            } catch (IllegalAccessError ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//        return new StudentDTO();
-//    }
     public boolean deleteOneStudent(Long id) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()) {
