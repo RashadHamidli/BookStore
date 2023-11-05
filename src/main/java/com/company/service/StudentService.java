@@ -17,7 +17,6 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-0
 
     public StudentDTO creatOneStudent(StudentDTO newStudentDTO) {
         Student student = convertToEntity(newStudentDTO);
