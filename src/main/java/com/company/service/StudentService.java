@@ -3,11 +3,8 @@ package com.company.service;
 import com.company.dao.StudentRepository;
 import com.company.dto.StudentDTO;
 import com.company.entity.Student;
-import org.apache.catalina.UserDatabase;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
