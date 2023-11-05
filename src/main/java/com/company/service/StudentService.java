@@ -61,7 +61,7 @@ public class StudentService {
                 foundedStudent.setEmail(newStudentDTO.getEmail());
             if (newStudentDTO.getAge() != null)
                 foundedStudent.setAge(newStudentDTO.getAge());
-            if (newStudentDTO.getPassword() != null && !new StudentDTO().getPassword().isEmpty())
+            if (newStudentDTO.getPassword() != null && !newStudentDTO.getPassword().isEmpty())
                 foundedStudent.setPassword(newStudentDTO.getPassword());
             if (newStudentDTO.getBooksReading() != null && !newStudentDTO.getBooksReading().isEmpty()) {
                 List<BookDTO> bookDTOList = newStudentDTO.getBooksReading();

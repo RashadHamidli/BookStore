@@ -36,7 +36,7 @@ public class AuthorRestController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long id, AuthorDTO newAuthorDTO) {
+    public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO newAuthorDTO) {
         AuthorDTO authorDTO = authorService.updateAuthor(id, newAuthorDTO);
         return ResponseEntity.ok(authorDTO);
     }

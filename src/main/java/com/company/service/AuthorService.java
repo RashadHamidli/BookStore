@@ -25,7 +25,7 @@ public class AuthorService {
             AuthorDTO authorDTO = convertToDTO(author);
             List<BookDTO> authoredBooks = author.getAuthoredBooks()
                     .stream()
-                    .map(this::converteToBookDTO)
+                    .map(this::convertToBookDTO)
                     .collect(Collectors.toList());
             authorDTO.setAuthoredBooks(authoredBooks);
             return authorDTO;
@@ -38,7 +38,7 @@ public class AuthorService {
             Author foundedAuthor = optionalAuthor.get();
             AuthorDTO authorDTO = convertToDTO(foundedAuthor);
             List<Book> authoredBooks = foundedAuthor.getAuthoredBooks();
-            List<BookDTO> bookDTOList = authoredBooks.stream().map(this::converteToBookDTO).toList();
+            List<BookDTO> bookDTOList = authoredBooks.stream().map(this::convertToBookDTO).toList();
             authorDTO.setAuthoredBooks(bookDTOList);
             return authorDTO;
         }
@@ -47,7 +47,7 @@ public class AuthorService {
 
 
     public AuthorDTO creatAuthor(AuthorDTO newAuthorDTO) {
-        Author author = converteToEntity(newAuthorDTO);
+        Author author = convertToEntity(newAuthorDTO);
         Author saveAuthor = authorRepository.save(author);
         return convertToDTO(saveAuthor);
     }
@@ -71,11 +71,11 @@ public class AuthorService {
                 foundedAuthor.setEmail(newAuthorDTO.getEmail());
             if (newAuthorDTO.getAge() != null)
                 foundedAuthor.setAge(newAuthorDTO.getAge());
-            if (foundedAuthor.getPassword() != null && !foundedAuthor.getPassword().isEmpty())
+            if (newAuthorDTO.getPassword() != null && !newAuthorDTO.getPassword().isEmpty())
                 foundedAuthor.setPassword(newAuthorDTO.getPassword());
-            if (foundedAuthor.getAuthoredBooks() != null && !foundedAuthor.getAuthoredBooks().isEmpty()) {
+            if (newAuthorDTO.getAuthoredBooks() != null && !newAuthorDTO.getAuthoredBooks().isEmpty()) {
                 List<BookDTO> bookDTOList = newAuthorDTO.getAuthoredBooks();
-                List<Book> list = bookDTOList.stream().map(this::converteToBookEntity).toList();
+                List<Book> list = bookDTOList.stream().map(this::convertToBookEntity).toList();
                 foundedAuthor.setAuthoredBooks(list);
             }
             foundedAuthor.setId(id);
@@ -88,7 +88,7 @@ public class AuthorService {
 
     private AuthorDTO convertToDTO(Author author) {
         AuthorDTO authorDTO = new AuthorDTO();
-        authorDTO.setId(authorDTO.getId());
+        authorDTO.setId(author.getId());
         authorDTO.setName(author.getName());
         authorDTO.setEmail(author.getEmail());
         authorDTO.setAge(author.getAge());
@@ -96,7 +96,7 @@ public class AuthorService {
         return authorDTO;
     }
 
-    private Author converteToEntity(AuthorDTO authorDTO) {
+    private Author convertToEntity(AuthorDTO authorDTO) {
         Author author = new Author();
         author.setId(authorDTO.getId());
         author.setName(authorDTO.getName());
@@ -106,7 +106,7 @@ public class AuthorService {
         return author;
     }
 
-    private BookDTO converteToBookDTO(Book book) {
+    private BookDTO convertToBookDTO(Book book) {
         BookDTO bookDTO = new BookDTO();
         bookDTO.setId(book.getId());
         bookDTO.setName(book.getName());
@@ -114,7 +114,7 @@ public class AuthorService {
         return bookDTO;
     }
 
-    private Book converteToBookEntity(BookDTO bookDTO) {
+    private Book convertToBookEntity(BookDTO bookDTO) {
         Book book = new Book();
         book.setId(bookDTO.getId());
         book.setName(bookDTO.getName());
