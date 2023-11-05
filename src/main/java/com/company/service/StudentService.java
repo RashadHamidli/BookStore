@@ -1,7 +1,9 @@
 package com.company.service;
 
 import com.company.dao.StudentRepository;
+import com.company.dto.BookDTO;
 import com.company.dto.StudentDTO;
+import com.company.entity.Book;
 import com.company.entity.Student;
 import org.springframework.stereotype.Service;
 
@@ -17,41 +19,53 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-
     public StudentDTO creatOneStudent(StudentDTO newStudentDTO) {
         Student student = convertToEntity(newStudentDTO);
         Student saveStudent = studentRepository.save(student);
-        StudentDTO studentDTO = convertToDto(saveStudent);
-        return studentDTO;
+        return convertToDto(saveStudent);
     }
 
     public List<StudentDTO> getAllStudent() {
         List<Student> students = studentRepository.findAll();
-        return students.stream().map(this::convertToDto).collect(Collectors.toList());
+        return students.stream().map(student -> {
+            StudentDTO studentDTO = convertToDto(student);
+            List<BookDTO> bookDTOList = student.getBooksReading()
+                    .stream()
+                    .map(this::convertToBookDTO)
+                    .collect(Collectors.toList());
+            studentDTO.setBooksReading(bookDTOList);
+            return studentDTO;
+        }).collect(Collectors.toList());
     }
+
 
     public StudentDTO getOneStudent(Long id) {
         Optional<Student> foundedStudent = studentRepository.findById(id);
-        StudentDTO studentDTO = new StudentDTO();
         if (foundedStudent.isPresent()) {
             Student student = foundedStudent.get();
-            return convertToDto(student);
+            StudentDTO studentDTO= convertToDto(student);
+            List<BookDTO> bookDTOList= convertToBookEntity(student.getBooksReading());
+            studentDTO.setBooksReading(bookDTOList);
+            return studentDTO;
         }
         return new StudentDTO();
     }
 
-    public StudentDTO updateOneStudent(Long id, StudentDTO newStundetDTO) {
+    public StudentDTO updateOneStudent(Long id, StudentDTO newStudentDTO) {
         Optional<Student> optionalStudent = studentRepository.findById(id);
         if (optionalStudent.isPresent()) {
             Student foundedStudent = optionalStudent.get();
-            if (newStundetDTO.getName() != null)
-                foundedStudent.setName(newStundetDTO.getName());
-            if (newStundetDTO.getEmail() != null) ;
-            foundedStudent.setEmail(newStundetDTO.getEmail());
-            if (newStundetDTO.getAge() != null) ;
-            foundedStudent.setAge(newStundetDTO.getAge());
-            if (newStundetDTO.getPassword() != null) ;
-            foundedStudent.setPassword(newStundetDTO.getPassword());
+            if (newStudentDTO.getName() != null)
+                foundedStudent.setName(newStudentDTO.getName());
+            if (newStudentDTO.getEmail() != null) ;
+            foundedStudent.setEmail(newStudentDTO.getEmail());
+            if (newStudentDTO.getAge() != null) ;
+            foundedStudent.setAge(newStudentDTO.getAge());
+            if (newStudentDTO.getPassword() != null) ;
+            foundedStudent.setPassword(newStudentDTO.getPassword());
+
+//            foundedStudent.setBooksReading(convertToBookList(newStudentDTO.getBooksReading()));
+
             foundedStudent.setId(id);
             Student updateStudent = studentRepository.save(foundedStudent);
             return convertToDto(updateStudent);
@@ -104,5 +118,18 @@ public class StudentService {
         return student;
     }
 
+    private List<BookDTO> convertToBookEntity(List<Book> books) {
+        return books.stream()
+                .map(this::convertToBookDTO)
+                .collect(Collectors.toList());
+    }
+
+    private BookDTO convertToBookDTO(Book book) {
+        BookDTO bookDTO = new BookDTO();
+        bookDTO.setId(book.getId());
+        bookDTO.setName(book.getName());
+        bookDTO.setAuthorId(book.getAuthor().getId());
+        return bookDTO;
+    }
 
 }
