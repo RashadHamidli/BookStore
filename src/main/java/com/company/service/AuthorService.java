@@ -34,7 +34,7 @@ public class AuthorService {
         }).collect(Collectors.toList());
     }
 
-    public AuthorDTO getOneAuthor(Long id) {
+    public AuthorDTO getAuthor(Long id) {
         Optional<Author> optionalAuthor = authorRepository.findById(id);
         if (optionalAuthor.isPresent()) {
             Author foundedAuthor = optionalAuthor.get();
@@ -47,14 +47,44 @@ public class AuthorService {
         return new AuthorDTO();
     }
 
-    private List<BookDTO> convertToAuthorDTOList(List<Book> authors) {
-        return authors.stream().map(this::converteToBookDTO).collect(Collectors.toList());
-    }
 
-    public AuthorDTO creatOneAuthor(AuthorDTO newAuthorDTO) {
+    public AuthorDTO creatAuthor(AuthorDTO newAuthorDTO) {
         Author author = converteToEntity(newAuthorDTO);
         Author saveAuthor = authorRepository.save(author);
         return convertToDTO(saveAuthor);
+    }
+
+    public boolean deleteAuthor(Long id) {
+        Optional<Author> optionalAuthor = authorRepository.findById(id);
+        if (optionalAuthor.isPresent()) {
+            authorRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    public AuthorDTO updateAuthor(Long id, AuthorDTO newAuthorDTO) {
+        Optional<Author> optionalAuthor = authorRepository.findById(id);
+        if (optionalAuthor.isPresent()) {
+            Author foundedAuthor = optionalAuthor.get();
+            if (newAuthorDTO.getName() != null && !newAuthorDTO.getName().isEmpty())
+                foundedAuthor.setName(newAuthorDTO.getName());
+            if (newAuthorDTO.getEmail() != null && !newAuthorDTO.getEmail().isEmpty())
+                foundedAuthor.setEmail(newAuthorDTO.getEmail());
+            if (newAuthorDTO.getAge() != null)
+                foundedAuthor.setAge(newAuthorDTO.getAge());
+            if (foundedAuthor.getPassword() != null && !foundedAuthor.getPassword().isEmpty())
+                foundedAuthor.setPassword(newAuthorDTO.getPassword());
+            if (foundedAuthor.getAuthoredBooks() != null && !foundedAuthor.getAuthoredBooks().isEmpty()) {
+                List<BookDTO> bookDTOList = newAuthorDTO.getAuthoredBooks();
+                List<Book> list = bookDTOList.stream().map(this::converteToBookEntity).toList();
+                foundedAuthor.setAuthoredBooks(list);
+            }
+            foundedAuthor.setId(id);
+            Author author = authorRepository.save(foundedAuthor);
+            return convertToDTO(author);
+        }
+        return new AuthorDTO();
     }
 
 

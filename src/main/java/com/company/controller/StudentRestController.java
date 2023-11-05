@@ -25,25 +25,25 @@ public class StudentRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<StudentDTO> getOneStudent(@PathVariable Long id) {
-        StudentDTO studentDTO = studentService.getOneStudent(id);
+        StudentDTO studentDTO = studentService.getStudent(id);
         return ResponseEntity.ok(studentDTO);
     }
 
     @PostMapping
     public ResponseEntity<StudentDTO> creatOneStudent(@RequestBody StudentDTO studentDTO) {
-        StudentDTO student = studentService.creatOneStudent(studentDTO);
+        StudentDTO student = studentService.creatStudent(studentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(student);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<StudentDTO> updateOneStudent(@PathVariable Long id, @RequestBody StudentDTO newStudentDTO) {
-        StudentDTO studentDTO = studentService.updateOneStudent(id, newStudentDTO);
+        StudentDTO studentDTO = studentService.updateStudent(id, newStudentDTO);
         return ResponseEntity.ok(studentDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOneStudent(@PathVariable Long id) {
-        return studentService.deleteOneStudent(id) ? ResponseEntity.ok("Student with ID " + id + " has been deleted")
+        return studentService.deleteStudent(id) ? ResponseEntity.ok("Student with ID " + id + " has been deleted")
                 : ResponseEntity.notFound().build();
 
     }
