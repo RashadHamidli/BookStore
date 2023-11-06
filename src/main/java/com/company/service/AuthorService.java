@@ -6,16 +6,10 @@ import com.company.dto.AuthorDTO;
 import com.company.dto.BookDTO;
 import com.company.entity.Author;
 import com.company.entity.Book;
-import com.company.entity.Student;
 import com.company.mapper.AuthorMapper;
 import com.company.mapper.BookMapper;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -108,7 +102,7 @@ public class AuthorService {
         if (foundAuthor != null && foundAuthor.getPassword().equals(author.getPassword())) {
             return authorDTO; // Burada gerçek JWT üretme işlemi yapılmalıdır
         } else {
-            throw new UsernameNotFoundException("Invalid email or password.");
+            throw new RuntimeException("Invalid email or password.");
         }
     }
 

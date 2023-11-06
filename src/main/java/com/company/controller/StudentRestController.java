@@ -2,8 +2,6 @@ package com.company.controller;
 
 import com.company.dto.BookDTO;
 import com.company.dto.StudentDTO;
-import com.company.entity.Book;
-import com.company.entity.Student;
 import com.company.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,15 +49,17 @@ public class StudentRestController {
 
     }
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLogin userLogin) {
+    public ResponseEntity<String> login(@RequestBody StudentDTO studentDTO) {
         // Implementation for user login and JWT generation
+        studentService.login(studentDTO);
         return ResponseEntity.ok("JWT generated successfully.");
     }
 
     @GetMapping("/{studentId}/reading-list")
     public ResponseEntity<List<BookDTO>> getStudentReadingList(@PathVariable Long studentId) {
         // Implementation to get reading list of a student
-        return ResponseEntity.ok(/* List of books the student is reading */);
+        List<BookDTO> studentReadingList = studentService.getStudentReadingList(studentId);
+        return ResponseEntity.ok(studentReadingList);
     }
 
     @PostMapping("/{studentId}/subscribe/{authorId}")

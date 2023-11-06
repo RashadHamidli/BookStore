@@ -89,4 +89,25 @@ public class StudentService {
         return false;
     }
 
+    public StudentDTO login(StudentDTO studentDTO) {
+        Student student = studentMapper.studentConvertToStudent(studentDTO);
+        Student foundStudent = studentRepository.findByEmail(student.getEmail());
+        if (foundStudent != null && foundStudent.getPassword().equals(student.getPassword())) {
+            return studentDTO; // Burada gerçek JWT üretme işlemi yapılmalıdır
+        } else {
+            throw new RuntimeException("Invalid email or password.");
+        }
+    }
+
+    public List<BookDTO> getStudentReadingList(Long studentId) {
+        Optional<Student> optionalStudent = studentRepository.findById(studentId);
+        if (optionalStudent.isPresent()) {
+            optionalStudent.stream().map(student -> {
+                        StudentDTO studentDTO = studentMapper.studentConvertToStudentDto(student);
+                        return studentDTO.getBooksReading();
+                    }
+            ).collect(Collectors.toList());
+        }
+        return null;
+    }
 }
