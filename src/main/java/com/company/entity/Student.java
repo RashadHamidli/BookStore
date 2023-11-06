@@ -1,11 +1,9 @@
 package com.company.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Columns;
+import org.springframework.cache.annotation.EnableCaching;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

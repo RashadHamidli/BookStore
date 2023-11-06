@@ -2,6 +2,7 @@ package com.company.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.cache.annotation.EnableCaching;
 
 @Entity
 @Table(name = "books")

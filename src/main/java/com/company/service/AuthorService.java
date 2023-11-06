@@ -5,6 +5,7 @@ import com.company.dto.AuthorDTO;
 import com.company.dto.BookDTO;
 import com.company.entity.Author;
 import com.company.entity.Book;
+import jakarta.persistence.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Cacheable
 public class AuthorService {
     private final AuthorRepository authorRepository;
 

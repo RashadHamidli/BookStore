@@ -6,6 +6,9 @@ import com.company.dto.StudentDTO;
 import com.company.entity.Author;
 import com.company.entity.Book;
 import com.company.entity.Student;
+import com.company.mapper.BookMapper;
+import com.company.mapper.StudentMapper;
+import jakarta.persistence.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Primary
+@Cacheable
 public class StudentService {
     private final StudentRepository studentRepository;
 
@@ -22,6 +26,22 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+//        public StudentDTO creatStudent(StudentDTO newStudentDTO) {
+//            Student student = studentMapper.studentDTOtoStudent(newStudentDTO);
+//            Student saveStudent = studentRepository.save(student);
+//            return studentMapper.studentToStudentDTO(saveStudent);
+//        }
+//
+//        public List<StudentDTO> getAllStudent() {
+//            List<Student> students = studentRepository.findAll();
+//            return students.stream().map(student -> {
+//                StudentDTO studentDTO = studentMapper.studentToStudentDTO(student);
+//                List<Book> booksReading = student.getBooksReading();
+//                List<BookDTO> bookDTOS = booksReading.stream().map(bookMapper::bookToBookDTO).collect(Collectors.toList());
+//                studentDTO.setBooksReading(bookDTOS);
+//                return studentDTO;
+//            }).collect(Collectors.toList());
+//        }
     public StudentDTO creatStudent(StudentDTO newStudentDTO) {
         Student student = convertToEntity(newStudentDTO);
         Student saveStudent = studentRepository.save(student);

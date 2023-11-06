@@ -2,6 +2,7 @@ package com.company.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.cache.annotation.EnableCaching;
 
 import java.util.ArrayList;
 import java.util.List;
