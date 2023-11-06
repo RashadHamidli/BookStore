@@ -1,13 +1,21 @@
 package com.company.service;
 
 import com.company.dao.AuthorRepository;
+import com.company.dao.BookRepository;
 import com.company.dto.AuthorDTO;
 import com.company.dto.BookDTO;
 import com.company.entity.Author;
 import com.company.entity.Book;
+import com.company.entity.Student;
 import com.company.mapper.AuthorMapper;
 import com.company.mapper.BookMapper;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +24,13 @@ import java.util.stream.Collectors;
 @Service
 public class AuthorService {
     private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
     private final AuthorMapper authorMapper;
     private final BookMapper bookMapper;
 
-    public AuthorService(AuthorRepository authorRepository, AuthorMapper authorMapper, BookMapper bookMapper) {
+    public AuthorService(AuthorRepository authorRepository, BookRepository bookRepository, AuthorMapper authorMapper, BookMapper bookMapper) {
         this.authorRepository = authorRepository;
+        this.bookRepository = bookRepository;
         this.authorMapper = authorMapper;
         this.bookMapper = bookMapper;
     }
@@ -91,4 +101,62 @@ public class AuthorService {
         }
         return new AuthorDTO();
     }
+
+    public AuthorDTO login(AuthorDTO authorDTO) {
+        Author author = authorMapper.authorConvertToAuthor(authorDTO);
+        Author foundAuthor = authorRepository.findByEmail(author.getEmail());
+        if (foundAuthor != null && foundAuthor.getPassword().equals(author.getPassword())) {
+            return authorDTO; // Burada gerçek JWT üretme işlemi yapılmalıdır
+        } else {
+            throw new UsernameNotFoundException("Invalid email or password.");
+        }
+    }
+
+    public BookDTO createBook(Long id, BookDTO newBookDTO) {
+        Optional<Author> optionalAuthor = authorRepository.findById(id);
+        if (optionalAuthor.isPresent()) {
+            Author author = optionalAuthor.get();
+            Book book = bookMapper.BookDTOConvertToBook(author, newBookDTO);
+            Book saveBook = bookRepository.save(book);
+            return bookMapper.bookConvertToBookDTO(saveBook);
+        }
+        return null;
+    }
+
+    public boolean deleteBook(Long bookId) {
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        if (optionalBook.isPresent()) {
+            bookRepository.deleteById(bookId);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteBookByAuthor(Long authorId, Long bookId) {
+        Author author = authorRepository.findById(authorId)
+                .orElseThrow(() -> new EntityNotFoundException("Author not found with id: " + authorId));
+
+        Book bookToDelete = author.getAuthoredBooks().stream()
+                .filter(book -> book.getId().equals(bookId))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Book not found with id: " + bookId + " for the author"));
+
+        author.getAuthoredBooks().remove(bookToDelete);
+        authorRepository.save(author);
+        return true;
+    }
+//    public void notifySubscribersForNewBook(Long authorId, BookDTO book) {
+//        Author author = authorRepository.findById(authorId)
+//                .orElseThrow(() -> new EntityNotFoundException("Author not found with id: " + authorId));
+//
+//        // Burada yeni kitapla ilgili işlemler yapılabilir, örneğin kitabı veritabanına kaydedebilirsiniz.
+//
+//        // Ardından, abonelerin e-posta ile bilgilendirilmesi gerçekleştirilebilir.
+//        List<Student> subscribers = /* Burada abonelerin alınması, örneğin: author.getSubscribers() */;
+//        for (Student subscriber : subscribers) {
+//            emailService.sendEmail(subscriber.getEmail(), "Yeni Kitap Yayınlandı",
+//                    "Sevgili " + subscriber.getName() + ",\n" +
+//                            author.getName() + " adlı yazarın yeni kitabı '" + book.getName() + "' şimdi raflardaki yerini aldı!");
+//        }
+//    }
 }
