@@ -1,6 +1,6 @@
 package com.company.security;
 
-import com.company.entities.User;
+import com.company.entity.Student;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,24 +13,24 @@ import java.util.List;
 
 @Getter
 @Setter
-public class JwtUserDetails implements UserDetails {
+public class JwtStudentDetails implements UserDetails {
 
 	public Long id;
 	private String username;
 	private String password;
 	private Collection<? extends GrantedAuthority> authorities;
 
-    private JwtUserDetails(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    private JwtStudentDetails(Long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
     }
 
-    public static JwtUserDetails create(User user) {
+    public static JwtStudentDetails create(Student student) {
         List<GrantedAuthority> authoritiesList = new ArrayList<>();
         authoritiesList.add(new SimpleGrantedAuthority("user"));
-        return new JwtUserDetails(user.getId(), user.getUserName(), user.getPassword(), authoritiesList);
+        return new JwtStudentDetails(student.getId(), student.getName(), student.getPassword(), authoritiesList);
     }
 
 	@Override

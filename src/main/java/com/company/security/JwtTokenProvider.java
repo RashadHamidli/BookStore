@@ -17,7 +17,7 @@ public class JwtTokenProvider {
 	private long EXPIRES_IN;
 
 	public String generateJwtToken(Authentication auth) {
-		JwtUserDetails userDetails = (JwtUserDetails) auth.getPrincipal();
+		JwtStudentDetails userDetails = (JwtStudentDetails) auth.getPrincipal();
 		Date expireDate = new Date(new Date().getTime() + EXPIRES_IN);
 		return Jwts.builder().setSubject(Long.toString(userDetails.getId()))
 				.setIssuedAt(new Date()).setExpiration(expireDate)
