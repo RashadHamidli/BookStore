@@ -27,5 +27,13 @@ public class BookMapper {
         book.setAuthor(author);
         return book;
     }
+    public Book BookDTOConvertToBook(Author author, BookDTO bookDTO) {
+        Book book = new Book();
+        book.setId(bookDTO.getId());
+        book.setName(bookDTO.getName());
+        author.setId(bookDTO.getAuthorId());
+        book.setAuthor(author);
+        return book;
+    }
 
 }

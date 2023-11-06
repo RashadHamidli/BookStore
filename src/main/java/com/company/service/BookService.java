@@ -5,65 +5,36 @@ import com.company.dto.AuthorDTO;
 import com.company.dto.BookDTO;
 import com.company.entity.Author;
 import com.company.entity.Book;
+import com.company.mapper.AuthorMapper;
+import com.company.mapper.BookMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
     private final BookRepository bookRepository;
     private final AuthorService authorService;
+    private final AuthorMapper authorMapper;
+    private final BookMapper bookMapper;
 
-    public BookService(BookRepository bookRepository, AuthorService authorService) {
+    public BookService(BookRepository bookRepository, AuthorService authorService, AuthorMapper authorMapper, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
+        this.authorMapper = authorMapper;
+        this.bookMapper = bookMapper;
     }
 
     public BookDTO creatBook(BookDTO newBookDTO) {
-        Book book =convertToEntity(newBookDTO);
+        Book book = bookMapper.BookDTOConvertToBook(newBookDTO);
         Book saveBook = bookRepository.save(book);
-        return convertToDTO(saveBook);
+        return bookMapper.bookConvertToBookDTO(saveBook);
     }
 
     public BookDTO creatBookByAuthorId(Long id, BookDTO newBookDTO) {
         AuthorDTO authorDTO = authorService.getAuthor(id);
-        Author author = convertToAuthorEntity(authorDTO);
-        Book book = convertToBookEntity(author, newBookDTO);
+        Author author = authorMapper.authorConvertToAuthor(authorDTO);
+        Book book = bookMapper.BookDTOConvertToBook(author, newBookDTO);
         Book saveBook = bookRepository.save(book);
-        return convertToDTO(saveBook);
-    }
-
-    private Book convertToBookEntity(Author author, BookDTO bookDTO) {//toEntity
-        Book book = new Book();
-        book.setName(bookDTO.getName());
-        book.setAuthor(author);
-        return book;
-    }
-
-    private Author convertToAuthorEntity(AuthorDTO authorDTO) {//toAuthorEntity
-        Author author = new Author();
-        author.setId(authorDTO.getId());
-        author.setName(authorDTO.getName());
-        author.setEmail(authorDTO.getEmail());
-        author.setAge(authorDTO.getAge());
-        author.setPassword(authorDTO.getPassword());
-        return author;
-    }
-
-    private BookDTO convertToDTO(Book book) {//toDTO
-        BookDTO bookDTO = new BookDTO();
-        bookDTO.setId(book.getId());
-        bookDTO.setName(book.getName());
-        bookDTO.setAuthorId(book.getAuthor().getId());
-        return bookDTO;
-    }
-
-    private Book convertToEntity(BookDTO bookDTO) {//toEntity
-        Book book = new Book();
-        book.setId(bookDTO.getId());
-        book.setName(bookDTO.getName());
-        Author author = new Author();
-        author.setId(bookDTO.getAuthorId());
-        book.setAuthor(author);
-        return book;
+        return bookMapper.bookConvertToBookDTO(saveBook);
     }
 }
 
