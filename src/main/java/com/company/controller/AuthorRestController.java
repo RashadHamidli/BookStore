@@ -76,7 +76,7 @@ public class AuthorRestController {
     @PostMapping("/{authorId}/notify-subscribers")
     public ResponseEntity<String> notifySubscribersForNewBook(@PathVariable Long authorId, @RequestBody BookDTO book) {
         // Implementation to notify subscribers about a new book from the author
-        authorService.notifySubscribersForNewBook(authorId,book);
+//        authorService.notifySubscribersForNewBook(authorId,book);
         return ResponseEntity.ok("Subscribers notified about the new book.");
     }
 

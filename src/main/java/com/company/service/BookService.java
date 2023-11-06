@@ -9,6 +9,10 @@ import com.company.mapper.AuthorMapper;
 import com.company.mapper.BookMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class BookService {
     private final BookRepository bookRepository;
@@ -22,7 +26,18 @@ public class BookService {
         this.authorMapper = authorMapper;
         this.bookMapper = bookMapper;
     }
-
+    public List<BookDTO> getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        return books.stream().map(bookMapper::bookConvertToBookDTO).collect(Collectors.toList());
+    }
+    public BookDTO getBookById(Long bookId) {
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+            return bookMapper.bookConvertToBookDTO(book);
+        }
+        return new BookDTO();
+    }
     public BookDTO creatBook(BookDTO newBookDTO) {
         Book book = bookMapper.BookDTOConvertToBook(newBookDTO);
         Book saveBook = bookRepository.save(book);

@@ -18,16 +18,17 @@ public class BookRestController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Book>> getAllBooks() {
+    public ResponseEntity<List<BookDTO>> getAllBooks() {
         // Retrieve all books
-        List<Book> allBooks = bookService.getAllBooks();
+        List<BookDTO> allBooks = bookService.getAllBooks();
         return ResponseEntity.ok(allBooks);
     }
 
     @GetMapping("/{bookId}")
-    public ResponseEntity<Book> getBookById(@PathVariable Long bookId) {
+    public ResponseEntity<BookDTO> getBookById(@PathVariable Long bookId) {
         // Implementation to get book details by ID
-        return ResponseEntity.ok(/* Book details */);
+        BookDTO bookDTO = bookService.getBookById(bookId);
+        return ResponseEntity.ok(bookDTO);
     }
 
     @PostMapping
@@ -43,12 +44,12 @@ public class BookRestController {
     }
 
 
-    @GetMapping("/{bookId}/readers")
-    public ResponseEntity<List<Reader>> getReadersOfBook(@PathVariable Long bookId) {
-        // Implement retrieving readers of a specific book
-        List<Reader> readers = bookService.getReadersOfBook(bookId);
-        return ResponseEntity.ok(readers);
-    }
+    //    @GetMapping("/{bookId}/readers")
+//    public ResponseEntity<List<Reader>> getReadersOfBook(@PathVariable Long bookId) {
+//        // Implement retrieving readers of a specific book
+//        List<Reader> readers = bookService.getReadersOfBook(bookId);
+//        return ResponseEntity.ok(readers);
+//    }
     @PostMapping("/{bookId}/readers/{studentId}")
     public ResponseEntity<String> addReaderToBook(@PathVariable Long bookId, @PathVariable Long studentId) {
         // Implementation to add a reader to a book
