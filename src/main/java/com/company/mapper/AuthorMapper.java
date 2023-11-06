@@ -10,6 +10,12 @@ import java.util.stream.Collectors;
 
 @Component
 public class AuthorMapper {
+    private final BookMapper bookMapper;
+
+    public AuthorMapper(BookMapper bookMapper) {
+        this.bookMapper = bookMapper;
+    }
+
     public AuthorDTO authorConvertToAuthorDTO(Author author) {
         AuthorDTO authorDTO = new AuthorDTO();
         authorDTO.setId(author.getId());
@@ -20,7 +26,7 @@ public class AuthorMapper {
 
         List<BookDTO> authoredBooks = author.getAuthoredBooks()
                 .stream()
-                .map(new BookMapper()::bookConvertToBookDTO)
+                .map(bookMapper::bookConvertToBookDTO)
                 .collect(Collectors.toList());
         authorDTO.setAuthoredBooks(authoredBooks);
 
@@ -37,7 +43,7 @@ public class AuthorMapper {
 
         List<Book> authoredBooks = authorDTO.getAuthoredBooks()
                 .stream()
-                .map(new BookMapper()::BookDTOConvertToBook)
+                .map(bookMapper::BookDTOConvertToBook)
                 .collect(Collectors.toList());
         author.setAuthoredBooks(authoredBooks);
 

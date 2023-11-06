@@ -101,13 +101,9 @@ public class StudentService {
 
     public List<BookDTO> getStudentReadingList(Long studentId) {
         Optional<Student> optionalStudent = studentRepository.findById(studentId);
-        if (optionalStudent.isPresent()) {
-            optionalStudent.stream().map(student -> {
-                        StudentDTO studentDTO = studentMapper.studentConvertToStudentDto(student);
-                        return studentDTO.getBooksReading();
-                    }
-            ).collect(Collectors.toList());
-        }
-        return null;
+        return optionalStudent.map(student -> student.getBooksReading()
+                .stream()
+                .map(bookMapper::bookConvertToBookDTO)
+                .collect(Collectors.toList())).orElse(null);
     }
 }
