@@ -1,6 +1,5 @@
 package com.company.security;
 
-import com.company.service.AuthorDetailsServiceImpl;
 import com.company.service.StudentDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,14 +14,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-public class JwtAuthorAuthenticationFilter extends OncePerRequestFilter{
+public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 	private final JwtTokenProvider jwtTokenProvider;
-	private final AuthorDetailsServiceImpl authorDetailsService;
 
-	public JwtAuthorAuthenticationFilter(JwtTokenProvider jwtTokenProvider, AuthorDetailsServiceImpl authorDetailsService) {
+	private final StudentDetailsServiceImpl studentDetailsService;
+
+	public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, StudentDetailsServiceImpl studentDetailsService) {
 		this.jwtTokenProvider = jwtTokenProvider;
-		this.authorDetailsService = authorDetailsService;
+		this.studentDetailsService = studentDetailsService;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class JwtAuthorAuthenticationFilter extends OncePerRequestFilter{
 			String jwtToken = extractJwtFromRequest(request);
 			if(StringUtils.hasText(jwtToken) && jwtTokenProvider.validateToken(jwtToken)) {
 				Long id = jwtTokenProvider.getUserIdFromJwt(jwtToken);
-				UserDetails user = authorDetailsService.loadUserById(id);
+				UserDetails user = studentDetailsService.loadUserById(id);
 				if(user != null) {
 					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 					auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

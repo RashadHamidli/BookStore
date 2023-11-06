@@ -1,9 +1,9 @@
 package com.company.config;
 
 import com.company.security.JwtAuthenticationEntryPoint;
-import com.company.security.JwtAuthorAuthenticationFilter;
+import com.company.security.JwtAuthenticationFilter;
 import com.company.security.JwtStudentAuthenticationFilter;
-import com.company.service.AuthorDetailsServiceImpl;
+import com.company.security.JwtTokenProvider;
 import com.company.service.StudentDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,33 +25,31 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     private final StudentDetailsServiceImpl studentDetailsService;
-    private final AuthorDetailsServiceImpl authorDetailsService;
-    private final JwtAuthenticationEntryPoint handler;
+    private final JwtTokenProvider handler;
+    private final JwtAuthenticationEntryPoint handler1;
 
-    public SecurityConfig(StudentDetailsServiceImpl studentDetailsService, AuthorDetailsServiceImpl authorDetailsService, JwtAuthenticationEntryPoint handler) {
+    public SecurityConfig(StudentDetailsServiceImpl studentDetailsService, JwtTokenProvider handler, JwtAuthenticationEntryPoint handler1) {
         this.studentDetailsService = studentDetailsService;
-        this.authorDetailsService = authorDetailsService;
+        this.handler1 = handler1;
         this.handler = handler;
     }
 
     @Bean
-    public JwtStudentAuthenticationFilter jwtStudentAuthenticationFilter() {
-        return new JwtStudentAuthenticationFilter(handler, studentDetailsService);
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(handler, studentDetailsService);
     }
-    @Bean
-    public JwtAuthorAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtStudentAuthenticationFilter(handler,authorDetailsService);
-    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -69,17 +67,18 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .cors(Object::notifyAll)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/posts")
+                        .requestMatchers(HttpMethod.GET, "/user")
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/comments")
+                        .requestMatchers(HttpMethod.GET, "/student")
                         .permitAll()
-                        .requestMatchers("/auth/**")
+                        .requestMatchers("/author/**")
                         .permitAll()
                         .anyRequest().authenticated()
                 )

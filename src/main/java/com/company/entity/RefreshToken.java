@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name="refresh_token")
 @Data
-public class StudentRefreshToken {
+public class RefreshToken {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
