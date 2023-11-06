@@ -29,7 +29,7 @@ public class JwtStudentDetails implements UserDetails {
 
     public static JwtStudentDetails create(Student student) {
         List<GrantedAuthority> authoritiesList = new ArrayList<>();
-        authoritiesList.add(new SimpleGrantedAuthority("user"));
+        authoritiesList.add(new SimpleGrantedAuthority("student"));
         return new JwtStudentDetails(student.getId(), student.getName(), student.getPassword(), authoritiesList);
     }
 

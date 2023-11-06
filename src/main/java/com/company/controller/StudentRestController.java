@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentRestController {
     private final StudentService studentService;
 
@@ -46,6 +46,26 @@ public class StudentRestController {
         return studentService.deleteStudent(id) ? ResponseEntity.ok("Student with ID " + id + " has been deleted")
                 : ResponseEntity.notFound().build();
 
+    }
+    @PostMapping("/register")
+    public ResponseEntity<String> registerStudent(@RequestBody Student student) {
+        // Implement user registration for a student
+        studentService.registerStudent(student);
+        return ResponseEntity.ok("Student registered successfully.");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserLogin userLogin) {
+        // Implement user login and JWT token generation
+        String jwt = studentService.login(userLogin);
+        return ResponseEntity.ok(jwt);
+    }
+
+    @GetMapping("/{studentId}/reading-list")
+    public ResponseEntity<List<Book>> getStudentReadingList(@PathVariable Long studentId) {
+        // Implement retrieving the reading list of a student
+        List<Book> readingList = studentService.getReadingList(studentId);
+        return ResponseEntity.ok(readingList);
     }
 
 }

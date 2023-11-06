@@ -1,12 +1,15 @@
 package com.company.controller;
 
 import com.company.dto.BookDTO;
+import com.company.entity.Book;
 import com.company.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/books")
 public class BookRestController {
     private final BookService bookService;
 
@@ -25,4 +28,18 @@ public class BookRestController {
             BookDTO bookDTO = bookService.creatBookByAuthorId(id, newBookDTO);
             return ResponseEntity.ok(bookDTO);
     }
+    @GetMapping("")
+    public ResponseEntity<List<Book>> getAllBooks() {
+        // Retrieve all books
+        List<Book> allBooks = bookService.getAllBooks();
+        return ResponseEntity.ok(allBooks);
+    }
+
+    @GetMapping("/{bookId}/readers")
+    public ResponseEntity<List<Reader>> getReadersOfBook(@PathVariable Long bookId) {
+        // Implement retrieving readers of a specific book
+        List<Reader> readers = bookService.getReadersOfBook(bookId);
+        return ResponseEntity.ok(readers);
+    }
+
 }

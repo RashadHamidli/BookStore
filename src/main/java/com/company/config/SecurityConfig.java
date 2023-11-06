@@ -2,7 +2,6 @@ package com.company.config;
 
 import com.company.security.JwtAuthenticationEntryPoint;
 import com.company.security.JwtAuthenticationFilter;
-import com.company.security.JwtStudentAuthenticationFilter;
 import com.company.security.JwtTokenProvider;
 import com.company.service.StudentDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -67,18 +66,21 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors(Object::notifyAll)
+//                .cors(Object::notifyAll)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/user")
-                        .permitAll()
                         .requestMatchers(HttpMethod.GET, "/student")
                         .permitAll()
-                        .requestMatchers("/author/**")
+                        .requestMatchers(HttpMethod.POST, "/student")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/book")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/book")
+                        .permitAll()
+                        .requestMatchers("/author")
                         .permitAll()
                         .anyRequest().authenticated()
                 )
@@ -89,5 +91,23 @@ public class SecurityConfig {
 //                .formLogin(Customizer.withDefaults());
         return httpSecurity.build();
     }
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+////              .cors().and()
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeRequests(authorize -> authorize
+//                        .antMatchers(HttpMethod.GET, "/user").permitAll()
+//                        .antMatchers(HttpMethod.GET, "/student").permitAll()
+//                        .antMatchers("/author/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .exceptionHandling().authenticationEntryPoint(handler1)
+//                .and()
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        // .formLogin(Customizer.withDefaults()); // Bu satırı eklerseniz giriş sayfasını etkinleştirebilirsiniz
+//        return http.build();
+//    }
 
 }

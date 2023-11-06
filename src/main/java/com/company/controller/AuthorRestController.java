@@ -1,6 +1,7 @@
 package com.company.controller;
 
 import com.company.dto.AuthorDTO;
+import com.company.entity.Author;
 import com.company.service.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/author")
+@RequestMapping("/authors")
 public class AuthorRestController {
     private final AuthorService authorService;
 
@@ -45,5 +46,32 @@ public class AuthorRestController {
     public ResponseEntity<String> deleteAuthor(@PathVariable Long id) {
         return authorService.deleteAuthor(id) ? ResponseEntity.ok("Student with ID " + id + " has been deleted")
                 : ResponseEntity.notFound().build();
+    }
+    @PostMapping("/register")
+    public ResponseEntity<String> registerAuthor(@RequestBody Author author) {
+        // Implement user registration for an author
+        authorService.registerAuthor(author);
+        return ResponseEntity.ok("Author registered successfully.");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserLogin userLogin) {
+        // Implement user login and JWT token generation
+        String jwt = authorService.login(userLogin);
+        return ResponseEntity.ok(jwt);
+    }
+
+    @PostMapping("/{authorId}/books")
+    public ResponseEntity<String> createBook(@PathVariable Long authorId, @RequestBody Book book) {
+        // Implement creating a new book by the author
+        authorService.createBook(authorId, book);
+        return ResponseEntity.ok("Book created successfully.");
+    }
+
+    @DeleteMapping("/books/{bookId}")
+    public ResponseEntity<String> deleteBook(@PathVariable Long bookId) {
+        // Implement deleting a book by bookId (validate author's permission)
+        authorService.deleteBook(bookId);
+        return ResponseEntity.ok("Book deleted successfully.");
     }
 }
