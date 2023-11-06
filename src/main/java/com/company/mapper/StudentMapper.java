@@ -2,17 +2,28 @@ package com.company.mapper;
 
 import com.company.dto.StudentDTO;
 import com.company.entity.Student;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface StudentMapper {
-    StudentMapper INSTANCE = Mappers.getMapper(StudentMapper.class);
+@Component
+public class StudentMapper {
+        public StudentDTO studentConvertToStudentDto(Student student) {
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setId(student.getId());
+        studentDTO.setName(student.getName());
+        studentDTO.setEmail(student.getEmail());
+        studentDTO.setAge(student.getAge());
+        studentDTO.setPassword(student.getPassword());
+        return studentDTO;
+    }
 
-    @Mapping(source = "booksReading", target = "booksReading")
-    Student studentDTOtoStudent(StudentDTO studentDTO);
+    public Student studentConvertToStudent(StudentDTO studentDTO) {
+        Student student = new Student();
+        student.setId(studentDTO.getId());
+        student.setName(studentDTO.getName());
+        student.setEmail(studentDTO.getEmail());
+        student.setAge(studentDTO.getAge());
+        student.setPassword(student.getPassword());
+        return student;
+    }
 
-    @Mapping(source = "booksReading", target = "booksReading")
-    StudentDTO studentToStudentDTO(Student student);
 }

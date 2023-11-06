@@ -1,16 +1,47 @@
 package com.company.mapper;
 
 import com.company.dto.AuthorDTO;
+import com.company.dto.BookDTO;
 import com.company.entity.Author;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import com.company.entity.Book;
+import org.springframework.stereotype.Component;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public interface AuthorMapper {
-    AuthorMapper INSTANCE = Mappers.getMapper(AuthorMapper.class);
+@Component
+public class AuthorMapper {
+    public AuthorDTO authorConvertToAuthorDTO(Author author) {
+        AuthorDTO authorDTO = new AuthorDTO();
+        authorDTO.setId(author.getId());
+        authorDTO.setName(author.getName());
+        authorDTO.setEmail(author.getEmail());
+        authorDTO.setAge(author.getAge());
+        authorDTO.setPassword(author.getPassword());
 
-    @Mapping(source = "authoredBooks", target = "authoredBooks")
-    Author authorDTOtoAuthor(AuthorDTO authorDTO);
+        List<BookDTO> authoredBooks = author.getAuthoredBooks()
+                .stream()
+                .map(new BookMapper()::bookConvertToBookDTO)
+                .collect(Collectors.toList());
+        authorDTO.setAuthoredBooks(authoredBooks);
 
-    @Mapping(source = "authoredBooks", target = "authoredBooks")
-    AuthorDTO authorToAuthorDTO(Author author);
+        return authorDTO;
+    }
+
+    public Author authorConvertToAuthor(AuthorDTO authorDTO) {
+        Author author = new Author();
+        author.setId(authorDTO.getId());
+        author.setName(authorDTO.getName());
+        author.setEmail(authorDTO.getEmail());
+        author.setAge(authorDTO.getAge());
+        author.setPassword(authorDTO.getPassword());
+
+        List<Book> authoredBooks = authorDTO.getAuthoredBooks()
+                .stream()
+                .map(new BookMapper()::BookDTOConvertToBook)
+                .collect(Collectors.toList());
+        author.setAuthoredBooks(authoredBooks);
+
+        return author;
+    }
+
 }
