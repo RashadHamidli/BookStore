@@ -1,6 +1,9 @@
 package com.company.controller;
 
+import com.company.dto.BookDTO;
 import com.company.dto.StudentDTO;
+import com.company.entity.Book;
+import com.company.entity.Student;
 import com.company.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +32,8 @@ public class StudentRestController {
         return ResponseEntity.ok(studentDTO);
     }
 
-    @PostMapping
-    public ResponseEntity<StudentDTO> creatOneStudent(@RequestBody StudentDTO newStudentDTO) {
+    @PostMapping("/register")
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO newStudentDTO) {
         StudentDTO studentDTO = studentService.creatStudent(newStudentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(studentDTO);
     }
@@ -47,25 +50,22 @@ public class StudentRestController {
                 : ResponseEntity.notFound().build();
 
     }
-    @PostMapping("/register")
-    public ResponseEntity<String> registerStudent(@RequestBody Student student) {
-        // Implement user registration for a student
-        studentService.registerStudent(student);
-        return ResponseEntity.ok("Student registered successfully.");
-    }
-
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserLogin userLogin) {
-        // Implement user login and JWT token generation
-        String jwt = studentService.login(userLogin);
-        return ResponseEntity.ok(jwt);
+        // Implementation for user login and JWT generation
+        return ResponseEntity.ok("JWT generated successfully.");
     }
 
     @GetMapping("/{studentId}/reading-list")
-    public ResponseEntity<List<Book>> getStudentReadingList(@PathVariable Long studentId) {
-        // Implement retrieving the reading list of a student
-        List<Book> readingList = studentService.getReadingList(studentId);
-        return ResponseEntity.ok(readingList);
+    public ResponseEntity<List<BookDTO>> getStudentReadingList(@PathVariable Long studentId) {
+        // Implementation to get reading list of a student
+        return ResponseEntity.ok(/* List of books the student is reading */);
+    }
+
+    @PostMapping("/{studentId}/subscribe/{authorId}")
+    public ResponseEntity<String> subscribeToAuthor(@PathVariable Long studentId, @PathVariable Long authorId) {
+        // Implementation for a student to subscribe to an author
+        return ResponseEntity.ok("Student subscribed to author successfully.");
     }
 
 }

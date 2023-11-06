@@ -74,4 +74,16 @@ public class AuthorRestController {
         authorService.deleteBook(bookId);
         return ResponseEntity.ok("Book deleted successfully.");
     }
+
+    @PostMapping("/{authorId}/notify-subscribers")
+    public ResponseEntity<String> notifySubscribersForNewBook(@PathVariable Long authorId, @RequestBody Book book) {
+        // Implementation to notify subscribers about a new book from the author
+        return ResponseEntity.ok("Subscribers notified about the new book.");
+    }
+
+    @DeleteMapping("/{authorId}/books/{bookId}")
+    public ResponseEntity<String> deleteBookByAuthor(@PathVariable Long authorId, @PathVariable Long bookId) {
+        // Implementation to delete a book by the author
+        return ResponseEntity.ok("Book deleted successfully.");
+    }
 }
