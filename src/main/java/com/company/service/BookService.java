@@ -9,7 +9,6 @@ import jakarta.persistence.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-@Cacheable
 public class BookService {
     private final BookRepository bookRepository;
     private final AuthorService authorService;

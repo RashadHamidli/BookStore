@@ -1,4 +1,4 @@
-package com.company.mapper;
+package com.company.collector;
 
 import com.company.dto.AuthorDTO;
 import com.company.dto.BookDTO;

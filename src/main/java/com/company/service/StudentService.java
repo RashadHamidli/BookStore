@@ -17,8 +17,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Primary
-@Cacheable
 public class StudentService {
     private final StudentRepository studentRepository;
 

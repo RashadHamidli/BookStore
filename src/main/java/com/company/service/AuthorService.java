@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Cacheable
 public class AuthorService {
     private final AuthorRepository authorRepository;
 
