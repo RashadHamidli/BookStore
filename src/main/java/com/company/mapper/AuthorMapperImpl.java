@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class AuthorMapper {
+public class AuthorMapperImpl {
 
     public AuthorDTO convertToDTO(Author author) {
         AuthorDTO authorDTO = new AuthorDTO();
