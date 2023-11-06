@@ -14,11 +14,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Primary
-public class StudentService {
+public class StudentService2 {
     private final StudentRepository studentRepository;
 
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService2(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 
